@@ -6,6 +6,7 @@
 
 - [Introduction](#introduction)
 - [Models](#models)
+- [Quickstart](#quickstart)
 
 
 ## Introduction
@@ -54,4 +55,44 @@ converting IUPAC to canonical SMILES with accuracy 97%, does not support
 isomeric or isotopic SMILES', 'iupac2smiles-canonical-base': 'Medium 
 model for converting IUPAC to canonical SMILES with accuracy 99%, does 
 not support isomeric or isotopic SMILES'}
+```
+
+## Quickstart
+Firstly, install the library:
+```commandline
+pip install chemical-converters
+```
+### SMILES to IUPAC
+You can choose pretrained model from table in the section "Models", 
+but we recommend to use model "smiles2iupac-canonical-base".
+#### ! Preferred IUPAC style
+To choose the preferred IUPAC style, place style tokens before 
+your SMILES sequence.
+
+| Style Token | Description                                                                                        |
+|-------------|----------------------------------------------------------------------------------------------------|
+| `<BASE>`    | The most known name of the substance, sometimes is the mixture of traditional and systematic style |
+| `<SYST>`    | The totally systematic style without trivial names                                                 |
+| `<TRAD>`    | The style is based on trivial names of the parts of substances                                     |
+
+#### To perform simple translation, follow the example:
+```python
+from chemicalconverters import NamesConverter
+converter = NamesConverter(model_name="smiles2iupac-canonical-base")
+print(converter.smiles_to_iupac('CCO'))
+print(converter.smiles_to_iupac(['<SYST>CCO', '<TRAD>CCO', '<BASE>CCO']))
+```
+```text
+['ethanol']
+['ethanol', 'ethanol', 'ethanol']
+```
+#### Processing in batches:
+```python
+from chemicalconverters import NamesConverter
+converter = NamesConverter(model_name="smiles2iupac-canonical-base")
+print(converter.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=1, 
+                                process_in_batch=True, batch_size=1000))
+```
+```text
+['buta-1,3-diene', 'buta-1,3-diene'...]
 ```

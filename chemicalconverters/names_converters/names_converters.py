@@ -160,7 +160,7 @@ class NamesConverter:
 
         prediction = self._convert(smiles, "SMILES2IUPAC", num_beams, num_return_sequences)
         if validate:
-            return prediction, self.validate_iupac(smiles, prediction, NamesConverter('iupac2smiles'))
+            return prediction, self.validate_iupac(smiles, prediction, NamesConverter('iupac2smiles-canonical-base'))
 
         return prediction
 
