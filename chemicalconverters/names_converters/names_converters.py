@@ -4,7 +4,7 @@ import requests
 from tqdm import tqdm
 from transformers import AutoTokenizer
 from torch.utils.data import Dataset, DataLoader
-from modeling import MT5ForConditionalGeneration
+from chemicalconverters.model_utils import MT5ForConditionalGeneration
 from rdkit import DataStructs, Chem
 from rdkit.Chem import AllChem
 import warnings
@@ -25,7 +25,7 @@ class BatchDataset(Dataset):
         return len(self.encodings.input_ids)
 
 
-class ChemicalConverter:
+class NamesConverter:
     """A class for converting chemical representations between SMILES and IUPAC names using pre-trained MT5 models."""
 
     def __init__(self, model_name: str):
@@ -65,7 +65,7 @@ class ChemicalConverter:
         """Ensures the specified model is downloaded; if not, downloads it."""
         if not model_path.exists():
             model_path.mkdir(parents=True, exist_ok=True)
-            ChemicalConverter._download_model(model_path, model_name, model_files)
+            NamesConverter._download_model(model_path, model_name, model_files)
 
     @staticmethod
     def _download_model(model_path: Path, model_name: str, model_files: list):
@@ -96,7 +96,8 @@ class ChemicalConverter:
             else:
                 raise RuntimeError(f"Failed to download '{file_name}'. Status code: {response.status_code}")
 
-    def _convert(self, input_sequence: str, mode: str, num_beams: int = 1, num_return_sequences: int = 1) -> str:
+    def _convert(self, input_sequence: str, mode: str, num_beams: int = 1, num_return_sequences: int = 1) \
+            -> Union[str, List[str]]:
         """Converts a chemical representation between SMILES and IUPAC."""
         if mode == "SMILES2IUPAC":
             tokenizer, detokenizer = self.smiles_tokenizer, self.iupac_tokenizer
@@ -159,7 +160,7 @@ class ChemicalConverter:
 
         prediction = self._convert(smiles, "SMILES2IUPAC", num_beams, num_return_sequences)
         if validate:
-            return prediction, self.validate_iupac(smiles, prediction, ChemicalConverter('iupac2smiles'))
+            return prediction, self.validate_iupac(smiles, prediction, NamesConverter('iupac2smiles'))
 
         return prediction
 
@@ -172,6 +173,7 @@ class ChemicalConverter:
             return self._batch_convert(iupac, "IUPAC2SMILES", batch_size, num_beams)
 
         return self._convert(iupac, "IUPAC2SMILES", num_beams, num_return_sequences)
+
     @staticmethod
     def validate_iupac(input_sequence: str, predicted_sequence: str, validation_model) -> float:
         """
@@ -192,8 +194,8 @@ class ChemicalConverter:
 
         return DataStructs.TanimotoSimilarity(fp_original, fp_converted)
 
-    @property
-    def available_models(self, models_dir: Path = Path(__file__).resolve().parent / "models") -> dict:
+    @staticmethod
+    def available_models(models_dir: Path = Path(__file__).resolve().parent / "models") -> dict:
         """Gets a description of all models."""
         models_description_path = models_dir / "models_description.json"
         with open(models_description_path, "rt") as file:
@@ -202,7 +204,8 @@ class ChemicalConverter:
 
 # Example of using the class
 if __name__ == "__main__":
-    model = ChemicalConverter("smiles_test")
-    print(model.available_models)
-    print(model.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=2, process_in_batch=False,
+    print(NamesConverter.available_models())
+    model = NamesConverter("smiles_test")
+    print(model.available_models())
+    print(model.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=1, process_in_batch=True,
                                 batch_size=1000))
