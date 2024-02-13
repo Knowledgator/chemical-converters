@@ -30,11 +30,11 @@ modification to support different inputs and outputs. All available models
 are presented in the table:
 
 | Model                        | Accuracy | Size(MB) | Task            | Processing speed (items/s)\* |
-|------------------------------|----------|----------|-----------------|------------------------------|
-| smiles2iupac-canonical-small | 100%     | 24       | SMILES to IUPAC | 100%                         |
-| smiles2iupac-canonical-base  | 100%     | 180      | SMILES to IUPAC | 100%                         |
-| iupac2smiles-canonical-small | 100%     | 23       | IUPAC to SMILES | 100%                         |
-| iupac2smiles-canonical-base  | 100%     | 180      | IUPAC to SMILES | 100%                         |
+|------------------------------|----------|----------|-----------------|---------------------------|
+| smiles2iupac-canonical-small | 100%     | 24       | SMILES to IUPAC | 100%   |                   |
+| smiles2iupac-canonical-base  | 100%     | 180      | SMILES to IUPAC | 100%   |                    |
+| iupac2smiles-canonical-small | 100%     | 23       | IUPAC to SMILES | 100%   |                    |
+| iupac2smiles-canonical-base  | 100%     | 180      | IUPAC to SMILES | 100%   |                     |
 *batch size = 512, GPU = GTX 1660 Ti Max-Q (mobile)
 
 also, you can check the most resent models within the library:
