@@ -7,6 +7,7 @@
 - [Introduction](#introduction)
 - [Models](#models)
 - [Quickstart](#quickstart)
+- [Citation](#citation)
 
 
 ## Introduction
@@ -96,3 +97,61 @@ print(converter.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=1
 ```text
 ['buta-1,3-diene', 'buta-1,3-diene'...]
 ```
+#### Validation SMILES to IUPAC translations
+It's possible to validate the translations by reverse translation into IUPAC
+and calculating Tanimoto similarity of two molecules fingerprints.
+````python
+from chemicalconverters import NamesConverter
+converter = NamesConverter(model_name="smiles2iupac-canonical-base")
+print(converter.smiles_to_iupac('CCO', validate=True))
+````
+````text
+['ethanol'] 1.0
+````
+The larger is Tanimoto similarity the more is probability, that the prediction was correct.
+
+You can also process validation manually:
+```python
+from chemicalconverters import NamesConverter
+validation_model = NamesConverter(model_name="iupac2smiles-canonical-base")
+print(NamesConverter.validate_iupac(input_sequence='CCO', predicted_sequence='CCO', validation_model=validation_model))
+```
+```text
+1.0
+```
+!Note validation was not implemented in processing in batches.
+
+### IUPAC to SMILES
+You can choose pretrained model from table in the section "Models", 
+but we recommend to use model "iupac2smiles-canonical-base".
+#### To perform simple translation, follow the example:
+```python
+from chemicalconverters import NamesConverter
+converter = NamesConverter(model_name="iupac2smiles-canonical-base")
+print(converter.smiles_to_iupac('ethanol'))
+print(converter.smiles_to_iupac(['ethanol', 'ethanol', 'ethanol']))
+```
+```text
+['CCO']
+['CCO', 'CCO', 'CCO']
+```
+#### Processing in batches:
+```python
+from chemicalconverters import NamesConverter
+converter = NamesConverter(model_name="smiles2iupac-canonical-base")
+print(converter.smiles_to_iupac(["buta-1,3-diene" for _ in range(10)], num_beams=1, 
+                                process_in_batch=True, batch_size=1000))
+```
+```text
+['<SYST>C=CC=C', '<SYST>C=CC=C'...]
+```
+Our models also predict IUPAC styles from the table:
+
+| Style Token | Description                                                                                        |
+|-------------|----------------------------------------------------------------------------------------------------|
+| `<BASE>`    | The most known name of the substance, sometimes is the mixture of traditional and systematic style |
+| `<SYST>`    | The totally systematic style without trivial names                                                 |
+| `<TRAD>`    | The style is based on trivial names of the parts of substances                                     |
+
+## Citation
+Coming soon.
