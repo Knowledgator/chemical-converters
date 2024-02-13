@@ -201,6 +201,8 @@ class ChemicalConverter:
 
 
 # Example of using the class
-model = ChemicalConverter("smiles_test")
-print(model.available_models)
-print(model.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=2, process_in_batch=False, batch_size=1000))
+if __name__ == "__main__":
+    model = ChemicalConverter("smiles_test")
+    print(model.available_models)
+    print(model.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=2, process_in_batch=False,
+                                batch_size=1000))
