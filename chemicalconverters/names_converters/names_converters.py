@@ -16,6 +16,7 @@ Explore more tools and resources:
 - Blog: https://blog.knowledgator.com/
 
 License: Apache License 2.0
+👉👈
 """
 
 import json
