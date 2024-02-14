@@ -1,4 +1,5 @@
-﻿## Remember, chemistry is not just about reactions; it's about connections. Let's build those connections together! 💫
+﻿# Chemical-Converters
+Remember, chemistry is not just about reactions; it's about connections. Let's build those connections together! 💫
 
 <div align="center">
     <a href="https://www.knowledgator.com/" target="_blank"><img src="logos/kg.png" alt="Visit our website" height="30"></a>
@@ -8,7 +9,6 @@
     <a href="https://discord.com/invite/dkyeAgs9DG" target="_blank"><img src="logos/discord.png" alt="Join our Discord" height="30"></a>
     <a href="https://blog.knowledgator.com/" target="_blank"><img src="logos/medium.png" alt="Follow on Medium" height="30"></a>
 </div>
-# Chemical-Converters
 
 ## Library for translating chemical names
 
