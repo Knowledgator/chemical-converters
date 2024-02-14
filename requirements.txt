@@ -1,0 +1,6 @@
+setuptools~=69.0.3
+torch~=2.1.2+cu121
+transformers~=4.36.2
+requests~=2.31.0
+tqdm~=4.62.3
+rdkit~=2023.3.3
