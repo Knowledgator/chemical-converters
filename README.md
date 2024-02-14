@@ -158,10 +158,10 @@ Coming soon.
 ## Connect with Us
 
 <div align="center">
-    <a href="https://www.knowledgator.com/" target="_blank"><img src="https://assets-global.website-files.com/65902be8ba48a05dfdb73331/6590476fcc8e8f35b2332781_Group%201000002504%20(1).png" alt="Visit our website" height="30"></a>
-    <a href="https://www.linkedin.com/company/knowledgator/" target="_blank"><img src="https://www.edigitalagency.com.au/wp-content/uploads/Linkedin-logo-png.png" alt="Follow on LinkedIn" height="30"></a>
-    <a href="https://huggingface.co/knowledgator/" target="_blank"><img src="https://vectorseek.com/wp-content/uploads/2023/12/Hugging-Face-Logo-Vector.svg-.png" alt="Hugging Face Profile" height="30"></a>
-    <a href="https://twitter.com/knowledgator" target="_blank"><img src="https://freepnglogo.com/images/all_img/1691832278twitter-x-logo-png.png" alt="Follow on X" height="30"></a>
-    <a href="https://discord.com/invite/dkyeAgs9DG" target="_blank"><img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0b52aa9e99b832574a53_full_logo_blurple_RGB.png" alt="Join our Discord" height="30"></a>
-    <a href="https://blog.knowledgator.com/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Medium_%28website%29_logo.svg/2560px-Medium_%28website%29_logo.svg.png" alt="Follow on Medium" height="30"></a>
+    <a href="https://www.knowledgator.com/" target="_blank"><img src="logos/kg.png" alt="Visit our website" height="30"></a>
+    <a href="https://www.linkedin.com/company/knowledgator/" target="_blank"><img src="logos/linkedin.png" alt="Follow on LinkedIn" height="30"></a>
+    <a href="https://huggingface.co/knowledgator/" target="_blank"><img src="logos/huggingface.png" alt="Hugging Face Profile" height="30"></a>
+    <a href="https://twitter.com/knowledgator" target="_blank"><img src="logos/x.png" alt="Follow on X" height="30"></a>
+    <a href="https://discord.com/invite/dkyeAgs9DG" target="_blank"><img src="logos/discord.png" alt="Join our Discord" height="30"></a>
+    <a href="https://blog.knowledgator.com/" target="_blank"><img src="logos/medium.png" alt="Follow on Medium" height="30"></a>
 </div>
