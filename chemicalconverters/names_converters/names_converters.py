@@ -59,6 +59,7 @@ class NamesConverter:
         """
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         models_dir = Path(__file__).resolve().parent / "models"
+        ## TODO: update "models.json" with new models
         models_json_path = models_dir / "models.json"
         available_models = self._load_available_models(models_json_path)
 
@@ -69,6 +70,7 @@ class NamesConverter:
         self._ensure_model_downloaded(model_path, model_name, available_models[model_name])
 
         self.model = MT5ForConditionalGeneration.from_pretrained(str(model_path)).to(device)
+        ## TODO: change tokenizers links to "knowledgator" tokenizers
         self.smiles_tokenizer = AutoTokenizer.from_pretrained("BioMike/smiles")
         self.iupac_tokenizer = AutoTokenizer.from_pretrained("BioMike/iupac")
         self.smiles_max_len = 128
@@ -91,6 +93,7 @@ class NamesConverter:
     def _download_model(model_path: Path, model_name: str, model_files: list):
         """Downloads the specified model from the Hugging Face repository."""
         print(f"Downloading model {model_name}...")
+        ## TODO: change downloading link from "BioMike" to "knowledgator"
         base_url = f"https://huggingface.co/BioMike/{model_name}/resolve/main/"
 
         for file_name in model_files:
@@ -139,6 +142,7 @@ class NamesConverter:
     @staticmethod
     def available_models(models_dir: Path = Path(__file__).resolve().parent / "models") -> dict:
         """Gets a description of all models."""
+        ## TODO: update "models_description.json" with new models
         models_description_path = models_dir / "models_description.json"
         with open(models_description_path, "rt") as file:
             return json.load(file)
