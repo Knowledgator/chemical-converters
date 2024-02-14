@@ -2,12 +2,12 @@
 Remember, chemistry is not just about reactions; it's about connections. Let's build those connections together! 💫
 
 <div align="center">
-    <a href="https://www.knowledgator.com/" target="_blank"><img src="logos/kg.png" alt="Visit our website" height="30"></a>
-    <a href="https://www.linkedin.com/company/knowledgator/" target="_blank"><img src="logos/linkedin.png" alt="Follow on LinkedIn" height="30"></a>
-    <a href="https://huggingface.co/knowledgator/" target="_blank"><img src="logos/huggingface.png" alt="Hugging Face Profile" height="30"></a>
-    <a href="https://twitter.com/knowledgator" target="_blank"><img src="logos/x.png" alt="Follow on X" height="30"></a>
-    <a href="https://discord.com/invite/dkyeAgs9DG" target="_blank"><img src="logos/discord.png" alt="Join our Discord" height="30"></a>
-    <a href="https://blog.knowledgator.com/" target="_blank"><img src="logos/medium.png" alt="Follow on Medium" height="30"></a>
+    <a href="https://www.knowledgator.com/" target="_blank"><img src="logos/kg.png" alt="Visit our website" height="35"></a>
+    <a href="https://www.linkedin.com/company/knowledgator/" target="_blank"><img src="logos/linkedin.png" alt="Follow on LinkedIn" height="35"></a>
+    <a href="https://huggingface.co/knowledgator/" target="_blank"><img src="logos/huggingface.png" alt="Hugging Face Profile" height="35"></a>
+    <a href="https://twitter.com/knowledgator" target="_blank"><img src="logos/x.png" alt="Follow on X" height="35"></a>
+    <a href="https://discord.com/invite/dkyeAgs9DG" target="_blank"><img src="logos/discord.png" alt="Join our Discord" height="35"></a>
+    <a href="https://blog.knowledgator.com/" target="_blank"><img src="logos/medium.png" alt="Follow on Medium" height="35"></a>
 </div>
 
 ## Library for translating chemical names
