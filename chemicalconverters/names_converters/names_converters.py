@@ -1,3 +1,23 @@
+"""
+Main module for chemical name conversion using Knowledgator's pre-trained models.
+
+This module facilitates the conversion between SMILES (Simplified Molecular Input Line Entry System)
+and IUPAC (International Union of Pure and Applied Chemistry) names using transformer (Encoder-Decoder with attention
+mechanism).It leverages the MT5 architecture, modified to accommodate the intricacies of chemical nomenclature.
+
+For detailed documentation, visit: https://github.com/Knowledgator/chemical-converters
+
+Explore more tools and resources:
+- Official Website: https://www.knowledgator.com/
+- LinkedIn: https://www.linkedin.com/company/knowledgator/
+- Hugging Face: https://huggingface.co/knowledgator
+- Twitter: https://twitter.com/knowledgator
+- Discord: https://discord.com/invite/dkyeAgs9DG
+- Blog: https://blog.knowledgator.com/
+
+License: Apache License 2.0
+"""
+
 import json
 from pathlib import Path
 import requests
@@ -96,6 +116,33 @@ class NamesConverter:
             else:
                 raise RuntimeError(f"Failed to download '{file_name}'. Status code: {response.status_code}")
 
+    @staticmethod
+    def validate_iupac(input_sequence: str, predicted_sequence: str, validation_model) -> float:
+        """
+        Validates the conversion accuracy of a chemical representation by performing a round-trip conversion
+        (target format -> input format) using a different model for the reverse conversion.
+        """
+        reverse_converted_sequence = validation_model.iupac_to_smiles(predicted_sequence)
+
+        mol_original = Chem.MolFromSmiles(input_sequence)
+        mol_converted = Chem.MolFromSmiles(reverse_converted_sequence)
+        if not mol_original or not mol_converted:
+            warnings.warn("One or both of the SMILES could not be read by RDKit.", UserWarning)
+            return 0.0
+
+        fpgen = AllChem.GetRDKitFPGenerator()
+        fp_original = fpgen.GetFingerprint(mol_original)
+        fp_converted = fpgen.GetFingerprint(mol_converted)
+
+        return DataStructs.TanimotoSimilarity(fp_original, fp_converted)
+
+    @staticmethod
+    def available_models(models_dir: Path = Path(__file__).resolve().parent / "models") -> dict:
+        """Gets a description of all models."""
+        models_description_path = models_dir / "models_description.json"
+        with open(models_description_path, "rt") as file:
+            return json.load(file)
+
     def _convert(self, input_sequence: str, mode: str, num_beams: int = 1, num_return_sequences: int = 1) \
             -> Union[str, List[str]]:
         """Converts a chemical representation between SMILES and IUPAC."""
@@ -173,33 +220,6 @@ class NamesConverter:
             return self._batch_convert(iupac, "IUPAC2SMILES", batch_size, num_beams)
 
         return self._convert(iupac, "IUPAC2SMILES", num_beams, num_return_sequences)
-
-    @staticmethod
-    def validate_iupac(input_sequence: str, predicted_sequence: str, validation_model) -> float:
-        """
-        Validates the conversion accuracy of a chemical representation by performing a round-trip conversion
-        (target format -> input format) using a different model for the reverse conversion.
-        """
-        reverse_converted_sequence = validation_model.iupac_to_smiles(predicted_sequence)
-
-        mol_original = Chem.MolFromSmiles(input_sequence)
-        mol_converted = Chem.MolFromSmiles(reverse_converted_sequence)
-        if not mol_original or not mol_converted:
-            warnings.warn("One or both of the SMILES could not be read by RDKit.", UserWarning)
-            return 0.0
-
-        fpgen = AllChem.GetRDKitFPGenerator()
-        fp_original = fpgen.GetFingerprint(mol_original)
-        fp_converted = fpgen.GetFingerprint(mol_converted)
-
-        return DataStructs.TanimotoSimilarity(fp_original, fp_converted)
-
-    @staticmethod
-    def available_models(models_dir: Path = Path(__file__).resolve().parent / "models") -> dict:
-        """Gets a description of all models."""
-        models_description_path = models_dir / "models_description.json"
-        with open(models_description_path, "rt") as file:
-            return json.load(file)
 
 
 # Example of using the class
