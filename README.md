@@ -155,7 +155,7 @@ Our models also predict IUPAC styles from the table:
 
 ## Citation
 Coming soon.
-## Connect with Us
+## Remember, chemistry is not just about reactions; it's about connections. Let's build those connections together! 💫
 
 <div align="center">
     <a href="https://www.knowledgator.com/" target="_blank"><img src="logos/kg.png" alt="Visit our website" height="30"></a>
