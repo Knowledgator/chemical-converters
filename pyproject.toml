@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling<=1.18.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "chemical-converters"
+version = "0.0.1"
+
+license = {text = "Apache-2.0"}
+
+requires-python = ">=3.8"
+
+description = "Chemical-Converters, developed by Knowledgator, showcases our technological capabilities in the chemical domain with entry-level models for a glimpse into potential applications. It's collection of tools for converting one chemical format into another. You can choose any model at HuggingFace trained to do specific convertion and setup your pipeline with the framework."
+readme = "README.md"
+
+keywords= ['chemistry', 'biology', 'smiles', 'iupac', 'transformers', 'text2text']
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "transformers==4.36.2",
+    "torch==2.1.2",
+    "rdkit==2023.3.3",
+    "requests==2.31.0"
+]
+
+
+[options]
+packages = "chemicalconverters"
+zip_safe = "True"
+
+
+[tool.black]
+line-length = 80
+target-version = ['py37']

@@ -49,76 +49,34 @@ class BatchDataset(Dataset):
 class NamesConverter:
     """A class for converting chemical representations between SMILES and IUPAC names using pre-trained MT5 models."""
 
-    def __init__(self, model_name: str):
+    def __init__(self, model_name: str = 'knowledgator/SMILES2IUPAC-canonical-small',
+                        smiles_max_len: int = 128,
+                        iupac_max_len: int = 156):
         """Initializes the ChemicalConverter with the specified model.
 
         Args:
             model_name (str): The name of the model to use for conversion.
+            smiles_max_len (int): Maximum length in tokens of SMILES sequences.
+            iupac_max_len (int): Maximum length in tokens of IUPAC names.
+
 
         Raises:
             ValueError: If the specified model is not available.
         """
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        models_dir = Path(__file__).resolve().parent / "models"
-        ## TODO: update "models.json" with new models
-        models_json_path = models_dir / "models.json"
-        available_models = self._load_available_models(models_json_path)
 
-        if model_name not in available_models:
-            raise ValueError(f"Model '{model_name}' is not available. Choose from {list(available_models.keys())}")
-
-        model_path = models_dir / model_name
-        self._ensure_model_downloaded(model_path, model_name, available_models[model_name])
-
-        self.model = MT5ForConditionalGeneration.from_pretrained(str(model_path)).to(device)
+        self.model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
         ## TODO: change tokenizers links to "knowledgator" tokenizers
         self.smiles_tokenizer = AutoTokenizer.from_pretrained("BioMike/smiles")
         self.iupac_tokenizer = AutoTokenizer.from_pretrained("BioMike/iupac")
-        self.smiles_max_len = 128
-        self.iupac_max_len = 156
+        self.smiles_max_len = smiles_max_len
+        self.iupac_max_len = iupac_max_len
 
     @staticmethod
     def _load_available_models(models_json_path: Path) -> dict:
         """Loads the list of available models from a JSON file."""
         with open(models_json_path, "rt") as file:
             return json.load(file)
-
-    @staticmethod
-    def _ensure_model_downloaded(model_path: Path, model_name: str, model_files: list):
-        """Ensures the specified model is downloaded; if not, downloads it."""
-        if not model_path.exists():
-            model_path.mkdir(parents=True, exist_ok=True)
-            NamesConverter._download_model(model_path, model_name, model_files)
-
-    @staticmethod
-    def _download_model(model_path: Path, model_name: str, model_files: list):
-        """Downloads the specified model from the Hugging Face repository."""
-        print(f"Downloading model {model_name}...")
-        ## TODO: change downloading link from "BioMike" to "knowledgator"
-        base_url = f"https://huggingface.co/BioMike/{model_name}/resolve/main/"
-
-        for file_name in model_files:
-            file_url = base_url + file_name
-            response = requests.get(file_url, stream=True)
-
-            if response.status_code == 200:
-                total_size = int(response.headers.get('content-length', 0))
-                file_path = model_path / file_name
-
-                with open(file_path, 'wb') as file, tqdm(
-                        desc=file_name,
-                        total=total_size,
-                        unit='B',
-                        unit_scale=True,
-                        unit_divisor=1024,
-                ) as bar:
-                    for data in response.iter_content(chunk_size=1024):
-                        size = file.write(data)
-                        bar.update(size)
-
-                print(f"Downloaded '{file_name}' successfully.")
-            else:
-                raise RuntimeError(f"Failed to download '{file_name}'. Status code: {response.status_code}")
 
     @staticmethod
     def validate_iupac(input_sequence: str, predicted_sequence: str, validation_model) -> float:
