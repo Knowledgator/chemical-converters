@@ -45,8 +45,8 @@ are presented in the table:
 |------------------------------|----------|----------|-----------------|
 | SMILES2IUPAC-canonical-small | 75%      | 24       | SMILES to IUPAC |
 | SMILES2IUPAC-canonical-base  | 86.9%    | 180      | SMILES to IUPAC |
-| IUPAC2SMILES-canonical-small | 100%     | 24       | IUPAC to SMILES |
-| IUPAC2SMILES-canonical-base  | 100%     | 180      | IUPAC to SMILES |
+| IUPAC2SMILES-canonical-small | 88.9%    | 24       | IUPAC to SMILES |
+| IUPAC2SMILES-canonical-base  | 93.7%    | 180      | IUPAC to SMILES |
 
 *batch size = 512, GPU = GTX 1660 Ti Max-Q (mobile), num_beams=1
 
