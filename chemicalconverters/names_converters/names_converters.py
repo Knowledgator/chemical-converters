@@ -76,10 +76,10 @@ class NamesConverter:
         Validates the conversion accuracy of a chemical representation by performing a round-trip conversion
         (target format -> input format) using a different model for the reverse conversion.
         """
-        reverse_converted_sequence = validation_model.iupac_to_smiles(predicted_sequence)
-
-        mol_original = Chem.MolFromSmiles(input_sequence)
-        mol_converted = Chem.MolFromSmiles(reverse_converted_sequence)
+        reverse_converted_sequence = validation_model.iupac_to_smiles(predicted_sequence)[0]
+        
+        mol_original = Chem.MolFromSmiles(input_sequence[6:])
+        mol_converted = Chem.MolFromSmiles(reverse_converted_sequence[6:])
         if not mol_original or not mol_converted:
             warnings.warn("One or both of the SMILES could not be read by RDKit.", UserWarning)
             return 0.0
