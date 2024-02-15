@@ -55,15 +55,7 @@ from chemicalconverters import NamesConverter
 print(NamesConverter.available_models())
 ```
 ```text
-{'smiles2iupac-canonical-small': 'Small model for converting canonical 
-SMILES to IUPAC with accuracy 79%, does not support isomeric or isotopic
-SMILES', 'smiles2iupac-canonical-base': 'Medium model for converting 
-canonical SMILES to IUPAC with accuracy 86%, does not support isomeric or
-isotopic SMILES', 'iupac2smiles-canonical-small': 'Small model for 
-converting IUPAC to canonical SMILES with accuracy 97%, does not support
-isomeric or isotopic SMILES', 'iupac2smiles-canonical-base': 'Medium 
-model for converting IUPAC to canonical SMILES with accuracy 99%, does 
-not support isomeric or isotopic SMILES'}
+{'knowledgator/SMILES2IUPAC-canonical-small': 'Small model for converting canonical SMILES to IUPAC with accuracy 75%, does not support isomeric or isotopic SMILES', 'knowledgator/SMILES2IUPAC-canonical-base': 'Medium model for converting canonical SMILES to IUPAC with accuracy 87%, does not support isomeric or isotopic SMILES', 'knowledgator/IUPAC2SMILES-canonical-small': 'Small model for converting IUPAC to canonical SMILES with accuracy 89%, does not support isomeric or isotopic SMILES', 'knowledgator/IUPAC2SMILES-canonical-base': 'Medium model for converting IUPAC to canonical SMILES with accuracy 94%, does not support isomeric or isotopic SMILES'}
 ```
 
 ## Quickstart
