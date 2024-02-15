@@ -48,8 +48,6 @@ are presented in the table:
 | IUPAC2SMILES-canonical-small | 88.9%    | 24       | IUPAC to SMILES |
 | IUPAC2SMILES-canonical-base  | 93.7%    | 180      | IUPAC to SMILES |
 
-*batch size = 512, GPU = GTX 1660 Ti Max-Q (mobile), num_beams=1
-
 also, you can check the most resent models within the library:
 ```python
 from chemicalconverters import NamesConverter
