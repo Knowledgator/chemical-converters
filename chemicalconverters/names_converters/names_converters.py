@@ -66,8 +66,8 @@ class NamesConverter:
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
         ## TODO: change tokenizers links to "knowledgator" tokenizers
-        self.smiles_tokenizer = AutoTokenizer.from_pretrained("BioMike/smiles")
-        self.iupac_tokenizer = AutoTokenizer.from_pretrained("BioMike/iupac")
+        self.smiles_tokenizer = AutoTokenizer.from_pretrained("knowledgator/SMILES-FAST-TOKENIZER")
+        self.iupac_tokenizer = AutoTokenizer.from_pretrained("knowledgator/IUPAC-FAST-TOKENIZER")
         self.smiles_max_len = smiles_max_len
         self.iupac_max_len = iupac_max_len
 
@@ -181,7 +181,6 @@ class NamesConverter:
 # Example of using the class
 if __name__ == "__main__":
     print(NamesConverter.available_models())
-    model = NamesConverter("BioMike/smiles_test")
-    print(model.available_models())
+    model = NamesConverter("knowledgator/SMILES2IUPAC-canonical-base")
     print(model.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=1, process_in_batch=True,
                                 batch_size=1000))
