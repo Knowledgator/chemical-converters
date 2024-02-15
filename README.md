@@ -43,10 +43,10 @@ are presented in the table:
 
 | Model                        | Accuracy | Size(MB) | Task            | Processing speed (items/s)\* |
 |------------------------------|----------|----------|-----------------|------------------------------|
-| smiles2iupac-canonical-small | 100%     | 24       | SMILES to IUPAC | 100%                         |
-| smiles2iupac-canonical-base  | 100%     | 180      | SMILES to IUPAC | 100%                         |
-| iupac2smiles-canonical-small | 100%     | 23       | IUPAC to SMILES | 100%                         |
-| iupac2smiles-canonical-base  | 100%     | 180      | IUPAC to SMILES | 100%                         |
+| SMILES2IUPAC-canonical-small | 100%     | 24       | SMILES to IUPAC | 100%                         |
+| SMILES2IUPAC-canonical-base  | 100%     | 180      | SMILES to IUPAC | 100%                         |
+| IUPAC2SMILES-canonical-small | 100%     | 23       | IUPAC to SMILES | 100%                         |
+| IUPAC2SMILES-canonical-base  | 100%     | 180      | IUPAC to SMILES | 100%                         |
 
 *batch size = 512, GPU = GTX 1660 Ti Max-Q (mobile), num_beams=1
 
@@ -89,7 +89,7 @@ your SMILES sequence.
 #### To perform simple translation, follow the example:
 ```python
 from chemicalconverters import NamesConverter
-converter = NamesConverter(model_name="smiles2iupac-canonical-base")
+converter = NamesConverter(model_name="knowledgator/SMILES2IUPAC-canonical-base")
 print(converter.smiles_to_iupac('CCO'))
 print(converter.smiles_to_iupac(['<SYST>CCO', '<TRAD>CCO', '<BASE>CCO']))
 ```
@@ -100,7 +100,7 @@ print(converter.smiles_to_iupac(['<SYST>CCO', '<TRAD>CCO', '<BASE>CCO']))
 #### Processing in batches:
 ```python
 from chemicalconverters import NamesConverter
-converter = NamesConverter(model_name="smiles2iupac-canonical-base")
+converter = NamesConverter(model_name="knowledgator/SMILES2IUPAC-canonical-base")
 print(converter.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=1, 
                                 process_in_batch=True, batch_size=1000))
 ```
@@ -112,7 +112,7 @@ It's possible to validate the translations by reverse translation into IUPAC
 and calculating Tanimoto similarity of two molecules fingerprints.
 ````python
 from chemicalconverters import NamesConverter
-converter = NamesConverter(model_name="smiles2iupac-canonical-base")
+converter = NamesConverter(model_name="knowledgator/SMILES2IUPAC-canonical-base")
 print(converter.smiles_to_iupac('CCO', validate=True))
 ````
 ````text
@@ -123,7 +123,7 @@ The larger is Tanimoto similarity, the more is probability, that the prediction 
 You can also process validation manually:
 ```python
 from chemicalconverters import NamesConverter
-validation_model = NamesConverter(model_name="iupac2smiles-canonical-base")
+validation_model = NamesConverter(model_name="knowledgator/IUPAC2SMILES-canonical-base")
 print(NamesConverter.validate_iupac(input_sequence='CCO', predicted_sequence='CCO', validation_model=validation_model))
 ```
 ```text
@@ -137,7 +137,7 @@ but we recommend to use model "iupac2smiles-canonical-base".
 #### To perform simple translation, follow the example:
 ```python
 from chemicalconverters import NamesConverter
-converter = NamesConverter(model_name="iupac2smiles-canonical-base")
+converter = NamesConverter(model_name="knowledgator/IUPAC2SMILES-canonical-base")
 print(converter.smiles_to_iupac('ethanol'))
 print(converter.smiles_to_iupac(['ethanol', 'ethanol', 'ethanol']))
 ```
@@ -148,7 +148,7 @@ print(converter.smiles_to_iupac(['ethanol', 'ethanol', 'ethanol']))
 #### Processing in batches:
 ```python
 from chemicalconverters import NamesConverter
-converter = NamesConverter(model_name="smiles2iupac-canonical-base")
+converter = NamesConverter(model_name="knowledgator/IUPAC2SMILES-canonical-base")
 print(converter.smiles_to_iupac(["buta-1,3-diene" for _ in range(10)], num_beams=1, 
                                 process_in_batch=True, batch_size=1000))
 ```
