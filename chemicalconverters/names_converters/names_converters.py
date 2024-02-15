@@ -64,19 +64,12 @@ class NamesConverter:
             ValueError: If the specified model is not available.
         """
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-
         self.model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
         ## TODO: change tokenizers links to "knowledgator" tokenizers
         self.smiles_tokenizer = AutoTokenizer.from_pretrained("BioMike/smiles")
         self.iupac_tokenizer = AutoTokenizer.from_pretrained("BioMike/iupac")
         self.smiles_max_len = smiles_max_len
         self.iupac_max_len = iupac_max_len
-
-    @staticmethod
-    def _load_available_models(models_json_path: Path) -> dict:
-        """Loads the list of available models from a JSON file."""
-        with open(models_json_path, "rt") as file:
-            return json.load(file)
 
     @staticmethod
     def validate_iupac(input_sequence: str, predicted_sequence: str, validation_model) -> float:
@@ -99,7 +92,7 @@ class NamesConverter:
         return DataStructs.TanimotoSimilarity(fp_original, fp_converted)
 
     @staticmethod
-    def available_models(models_dir: Path = Path(__file__).resolve().parent / "models") -> dict:
+    def available_models(models_dir: Path = Path(__file__).resolve().parent) -> dict:
         """Gets a description of all models."""
         ## TODO: update "models_description.json" with new models
         models_description_path = models_dir / "models_description.json"
@@ -170,7 +163,7 @@ class NamesConverter:
 
         prediction = self._convert(smiles, "SMILES2IUPAC", num_beams, num_return_sequences)
         if validate:
-            return prediction, self.validate_iupac(smiles, prediction, NamesConverter('iupac2smiles-canonical-base'))
+            return prediction, self.validate_iupac(smiles, prediction, NamesConverter('knowledgator/IUPAC2SMILES-canonical-base'))
 
         return prediction
 
@@ -188,7 +181,7 @@ class NamesConverter:
 # Example of using the class
 if __name__ == "__main__":
     print(NamesConverter.available_models())
-    model = NamesConverter("smiles_test")
+    model = NamesConverter("BioMike/smiles_test")
     print(model.available_models())
     print(model.smiles_to_iupac(["<BASE>C=CC=C" for _ in range(10)], num_beams=1, process_in_batch=True,
                                 batch_size=1000))
