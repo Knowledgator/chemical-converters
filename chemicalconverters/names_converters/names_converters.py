@@ -93,9 +93,13 @@ class NamesConverter:
     @staticmethod
     def available_models(models_dir: Path = Path(__file__).resolve().parent) -> dict:
         """Gets a description of all models."""
-        models_description_path = models_dir / "models_description.json"
-        with open(models_description_path, "rt") as file:
-            return json.load(file)
+        models_description = {
+            "knowledgator/SMILES2IUPAC-canonical-small": "Small model for converting canonical SMILES to IUPAC with accuracy 75%, does not support isomeric or isotopic SMILES",
+            "knowledgator/SMILES2IUPAC-canonical-base": "Medium model for converting canonical SMILES to IUPAC with accuracy 87%, does not support isomeric or isotopic SMILES",
+            "knowledgator/IUPAC2SMILES-canonical-small": "Small model for converting IUPAC to canonical SMILES with accuracy 89%, does not support isomeric or isotopic SMILES",
+            "knowledgator/IUPAC2SMILES-canonical-base": "Medium model for converting IUPAC to canonical SMILES with accuracy 94%, does not support isomeric or isotopic SMILES"
+        }
+        return models_description
 
     def _convert(self, input_sequence: str, mode: str, num_beams: int = 1, num_return_sequences: int = 1) \
             -> Union[str, List[str]]:
