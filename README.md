@@ -118,7 +118,7 @@ You can also process validation manually:
 from chemicalconverters import NamesConverter
 
 validation_model = NamesConverter(model_name="knowledgator/IUPAC2SMILES-canonical-base")
-print(NamesConverter.validate_iupac(input_sequence='CCO', predicted_sequence='CCO', validation_model=validation_model))
+print(NamesConverter.validate_iupac(input_sequence='CCO', predicted_sequence='ethanol', validation_model=validation_model))
 ```
 ```text
 1.0
