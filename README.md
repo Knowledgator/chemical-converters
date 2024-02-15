@@ -65,7 +65,7 @@ pip install chemical-converters
 ```
 ### SMILES to IUPAC
 You can choose pretrained model from table in the section "Models", 
-but we recommend to use model "smiles2iupac-canonical-base".
+but we recommend to use model "knowledgator/SMILES2IUPAC-canonical-base".
 #### ! Preferred IUPAC style
 To choose the preferred IUPAC style, place style tokens before 
 your SMILES sequence.
@@ -127,7 +127,7 @@ print(NamesConverter.validate_iupac(input_sequence='CCO', predicted_sequence='et
 
 ### IUPAC to SMILES
 You can choose pretrained model from table in the section "Models", 
-but we recommend to use model "iupac2smiles-canonical-base".
+but we recommend to use model "knowledgator/IUPAC2SMILES-canonical-base".
 #### To perform simple translation, follow the example:
 ```python
 from chemicalconverters import NamesConverter
