@@ -65,7 +65,6 @@ class NamesConverter:
         """
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
-        ## TODO: change tokenizers links to "knowledgator" tokenizers
         self.smiles_tokenizer = AutoTokenizer.from_pretrained("knowledgator/SMILES-FAST-TOKENIZER")
         self.iupac_tokenizer = AutoTokenizer.from_pretrained("knowledgator/IUPAC-FAST-TOKENIZER")
         self.smiles_max_len = smiles_max_len
@@ -94,7 +93,6 @@ class NamesConverter:
     @staticmethod
     def available_models(models_dir: Path = Path(__file__).resolve().parent) -> dict:
         """Gets a description of all models."""
-        ## TODO: update "models_description.json" with new models
         models_description_path = models_dir / "models_description.json"
         with open(models_description_path, "rt") as file:
             return json.load(file)
