@@ -133,8 +133,8 @@ but we recommend to use model "knowledgator/IUPAC2SMILES-canonical-base".
 from chemicalconverters import NamesConverter
 
 converter = NamesConverter(model_name="knowledgator/IUPAC2SMILES-canonical-base")
-print(converter.smiles_to_iupac('ethanol'))
-print(converter.smiles_to_iupac(['ethanol', 'ethanol', 'ethanol']))
+print(converter.iupac_to_smiles('ethanol'))
+print(converter.iupac_to_smiles(['ethanol', 'ethanol', 'ethanol']))
 ```
 ```text
 ['CCO']
@@ -145,7 +145,7 @@ print(converter.smiles_to_iupac(['ethanol', 'ethanol', 'ethanol']))
 from chemicalconverters import NamesConverter
 
 converter = NamesConverter(model_name="knowledgator/IUPAC2SMILES-canonical-base")
-print(converter.smiles_to_iupac(["buta-1,3-diene" for _ in range(10)], num_beams=1, 
+print(converter.iupac_to_smiles(["buta-1,3-diene" for _ in range(10)], num_beams=1, 
                                 process_in_batch=True, batch_size=1000))
 ```
 ```text
