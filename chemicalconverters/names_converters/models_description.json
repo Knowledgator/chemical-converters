@@ -1,0 +1,6 @@
+{
+  "knowledgator/SMILES2IUPAC-canonical-small": "Small model for converting canonical SMILES to IUPAC with accuracy 75%, does not support isomeric or isotopic SMILES",
+  "knowledgator/SMILES2IUPAC-canonical-base": "Medium model for converting canonical SMILES to IUPAC with accuracy 87%, does not support isomeric or isotopic SMILES",
+  "knowledgator/IUPAC2SMILES-canonical-small": "Small model for converting IUPAC to canonical SMILES with accuracy 89%, does not support isomeric or isotopic SMILES",
+  "knowledgator/IUPAC2SMILES-canonical-base": "Medium model for converting IUPAC to canonical SMILES with accuracy 94%, does not support isomeric or isotopic SMILES"
+}
