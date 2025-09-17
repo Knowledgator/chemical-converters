@@ -22,10 +22,9 @@ classifiers = [
 ]
 
 dependencies = [
-    "transformers==4.36.2",
-    "torch==2.1.2",
-    "rdkit==2023.3.3",
-    "requests==2.31.0"
+    "transformers>=4.37.2,<=4.48.2",
+    "torch>=2.0.0,<3.0.0",
+    "rdkit>=2025.3.6",
 ]
 
 
