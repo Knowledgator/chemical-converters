@@ -20,9 +20,7 @@ License: Apache License 2.0
 """
 
 import json
-from pathlib import Path
-import requests
-from tqdm import tqdm
+import re
 from transformers import AutoTokenizer
 from torch.utils.data import Dataset, DataLoader
 from chemicalconverters.model_utils import MT5ForConditionalGeneration
@@ -49,9 +47,11 @@ class BatchDataset(Dataset):
 class NamesConverter:
     """A class for converting chemical representations between SMILES and IUPAC names using pre-trained MT5 models."""
 
-    def __init__(self, model_name: str = 'knowledgator/SMILES2IUPAC-canonical-small',
-                        smiles_max_len: int = 128,
-                        iupac_max_len: int = 156):
+    def __init__(self, 
+                 model_name: str = None,
+                 smiles_max_len: int = 128,
+                 iupac_max_len: int = 156
+                 ):
         """Initializes the ChemicalConverter with the specified model.
 
         Args:
@@ -63,6 +63,8 @@ class NamesConverter:
         Raises:
             ValueError: If the specified model is not available.
         """
+        if model_name is None:
+            model_name = "knowledgator/SMILES2IUPAC-canonical-small"
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
         self.smiles_tokenizer = AutoTokenizer.from_pretrained("knowledgator/SMILES-FAST-TOKENIZER")
@@ -77,9 +79,15 @@ class NamesConverter:
         (target format -> input format) using a different model for the reverse conversion.
         """
         reverse_converted_sequence = validation_model.iupac_to_smiles(predicted_sequence)[0]
-        
-        mol_original = Chem.MolFromSmiles(input_sequence[6:])
-        mol_converted = Chem.MolFromSmiles(reverse_converted_sequence[6:])
+
+        format = re.search(r'<(SYST|TRAD|BASE)>', input_sequence)
+        if format:
+            format = format.group(0)
+            input_sequence = input_sequence.replace(format, '')
+            reverse_converted_sequence = reverse_converted_sequence.replace(format, '')
+        print(f"Original: {input_sequence}, Re-converted: {reverse_converted_sequence}")
+        mol_original = Chem.MolFromSmiles(input_sequence[:])
+        mol_converted = Chem.MolFromSmiles(reverse_converted_sequence[:])
         if not mol_original or not mol_converted:
             warnings.warn("One or both of the SMILES could not be read by RDKit.", UserWarning)
             return 0.0
@@ -91,7 +99,7 @@ class NamesConverter:
         return DataStructs.TanimotoSimilarity(fp_original, fp_converted)
 
     @staticmethod
-    def available_models(models_dir: Path = Path(__file__).resolve().parent) -> dict:
+    def available_models() -> dict:
         """Gets a description of all models."""
         models_description = {
             "knowledgator/SMILES2IUPAC-canonical-small": "Small model for converting canonical SMILES to IUPAC with accuracy 75%, does not support isomeric or isotopic SMILES",
@@ -99,7 +107,7 @@ class NamesConverter:
             "knowledgator/IUPAC2SMILES-canonical-small": "Small model for converting IUPAC to canonical SMILES with accuracy 89%, does not support isomeric or isotopic SMILES",
             "knowledgator/IUPAC2SMILES-canonical-base": "Medium model for converting IUPAC to canonical SMILES with accuracy 94%, does not support isomeric or isotopic SMILES"
         }
-        return models_description
+        return json.dumps(models_description, indent=4)
 
     def _convert(self, input_sequence: str, mode: str, num_beams: int = 1, num_return_sequences: int = 1) \
             -> Union[str, List[str]]:
