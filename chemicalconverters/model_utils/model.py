@@ -15,11 +15,10 @@
 
 
 import copy
-import math
 import warnings
 from typing import List, Optional, Tuple, Union
 
-from transformers import MT5PreTrainedModel
+from transformers import MT5PreTrainedModel, GenerationMixin
 from transformers.models.mt5 import MT5Stack
 from transformers.modeling_outputs import Seq2SeqModelOutput,Seq2SeqLMOutput, BaseModelOutput
 from transformers.utils import (
@@ -51,7 +50,7 @@ _CONFIG_FOR_DOC = "MT5Config"
 _CHECKPOINT_FOR_DOC = "mt5-small"
 
 @add_start_docstrings("""MT5 Model with a `language model_utils` head on top.""", MT5_START_DOCSTRING)
-class MT5ForConditionalGeneration(MT5PreTrainedModel):
+class MT5ForConditionalGeneration(MT5PreTrainedModel, GenerationMixin):
     r"""
     Examples:
 
@@ -324,6 +323,8 @@ class MT5ForConditionalGeneration(MT5PreTrainedModel):
         )
 
     # Copied from transformers.models.t5.modeling_t5.T5ForConditionalGeneration.prepare_inputs_for_generation
+    # Modified to match GenerationMixin interface
+    
     def prepare_inputs_for_generation(
         self,
         input_ids,
@@ -338,17 +339,21 @@ class MT5ForConditionalGeneration(MT5PreTrainedModel):
         **kwargs,
     ):
         # cut decoder_input_ids if past_key_values is used
-        if past_key_values is not None:
-            past_length = past_key_values[0][0].shape[2]
+        if past_key_values is not None and len(past_key_values) > 0:
+            try:
+                past_length = past_key_values[0][0].shape[2]
+                
+                # Some generation methods already pass only the last input ID
+                if input_ids.shape[1] > past_length:
+                    remove_prefix_length = past_length
+                else:
+                    # Default to old behavior: keep only final ID
+                    remove_prefix_length = input_ids.shape[1] - 1
 
-            # Some generation methods already pass only the last input ID
-            if input_ids.shape[1] > past_length:
-                remove_prefix_length = past_length
-            else:
-                # Default to old behavior: keep only final ID
-                remove_prefix_length = input_ids.shape[1] - 1
-
-            input_ids = input_ids[:, remove_prefix_length:]
+                input_ids = input_ids[:, remove_prefix_length:]
+            except (IndexError, AttributeError):
+                # Fallback for different cache formats
+                pass
 
         return {
             "decoder_input_ids": input_ids,
